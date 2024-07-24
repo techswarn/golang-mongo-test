@@ -13,12 +13,16 @@ import (
 )
   
   func main() {
+    env := os.Getenv("ENVIRONMENT")
 
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	log.Fatal("Error loading .env file")
-	// 	log.Println(err)
-	// }
+	if env == "development" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal("Error loading .env file")
+			log.Println(err)
+		}
+	} 
+
 	DATABASE_URL := os.Getenv("DBURL")
 	log.Println(os.Getenv("DBURL"))
 	// Use the SetServerAPIOptions() method to set the version of the Stable API on the client
