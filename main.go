@@ -49,7 +49,7 @@ import (
 		}
 	
 		fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
-		io.WriteString(w, "Hello from a HandleFunc #1!\n")
+		io.WriteString(w, "Pinged your deployment. You successfully connected to MongoDB!\n")
 	})
 
 
