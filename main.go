@@ -45,10 +45,10 @@ import (
 	  
 		// Send a ping to confirm a successful connection
 		if err := client.Database("admin").RunCommand(context.TODO(), bson.D{{"ping", 1}}).Err(); err != nil {
+		  io.WriteString(w, "Connection failed!\n")
 		  panic(err)
 		}
 	
-		fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
 		io.WriteString(w, "Pinged your deployment. You successfully connected to MongoDB!\n")
 	})
 
