@@ -8,11 +8,13 @@ import (
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
+	"net/netip"
 	"io"
 )
   
   func main() {
     env := os.Getenv("ENVIRONMENT")
+	log.Println(os.Getenv("ENVIRONMENT"))
 
 	if env == "development" {
 		err := godotenv.Load()
@@ -47,6 +49,10 @@ import (
 		  io.WriteString(w, "Connection failed!\n")
 		  panic(err)
 		}
+
+		//Adding for testing purpose. Need to remove once done
+		addr, err := netip.ParseAddr("10.0.0.1")
+		log.Println(addr, err)
 	
 		io.WriteString(w, "Pinged your deployment. You successfully connected to MongoDB!\n")
 	})
