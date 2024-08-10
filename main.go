@@ -8,8 +8,8 @@ import (
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
-	"net/netip"
 	"io"
+	"github.com/jackc/pgx/v5"
 )
   
   func main() {
@@ -49,17 +49,33 @@ import (
 		  io.WriteString(w, "Connection failed!\n")
 		  panic(err)
 		}
-
-		//Adding for testing purpose. Need to remove once done
-		addr, err := netip.ParseAddr("10.0.0.1")
-		log.Println(addr, err)
 	
 		io.WriteString(w, "Pinged your deployment. You successfully connected to MongoDB!\n")
 	})
-
+	pgtest()
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
   }
 
 
+func pgtest() {
+	log.Println(os.Getenv("PG_DATABASE_URL"))
+	conn, err := pgx.Connect(context.Background(), os.Getenv("PG_DATABASE_URL"))
+	if err != nil {
+		log.Printf("Unable to connect to database: %v\n", err)
+		os.Exit(1)
+	}
+	defer conn.Close(context.Background())
+
+	var id int64
+	var num int64
+	var data string
+	err = conn.QueryRow(context.Background(), "select id, num, data from test").Scan(&id, &num, &data)
+	if err != nil {
+		log.Printf("QueryRow failed: %v\n", err)
+		os.Exit(1)
+	}
+
+	log.Println(id, num, data)
+}
   
